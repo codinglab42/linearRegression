@@ -1,23 +1,35 @@
-import _setup_path
+import os
+import sys
 
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-import importlib.util
-import os
 
+def setup_project():
+    """Setup del path del progetto - da importare in tutti gli script"""
+    current_script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(current_script_dir)  # Torna alla root
+    
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+    
+    print(f"🚀 Project root added to path: {project_root}")
+    return project_root
+
+# Esegui automaticamente
+project_root = setup_project()
 
 from utils.models.LinearRegresssion import LinearRegressionOneVariable
 
 
 def main():
 
-
+    print(f"🚀 Inizio del main")
 #from ... import ml_util.models.LinearRegresssion import LinearRegressionOneVariable
 
 
-    DATASET="../dataset/housePrice.csv"
+    DATASET = os.path.join(project_root, "dataset", "housePrice.csv")
     COLS=["size", "price"]
 
     # Read housing dataset
@@ -35,6 +47,8 @@ def main():
     b = 100
 
     tmp_f_wb = LinearRegressionOneVariable(x, w, b)
+
+    print("sto per iniziare il plot")
 
     # Plot
     plt.title("Housing Price")
@@ -67,8 +81,8 @@ def main():
 
     plt.text(x_pred + 200, y_pred - 120000, "Prediction:\nsize = 1200\nPrice = " + str(y_pred), fontsize = 6, bbox = dict(facecolor = 'white', alpha = 0.8))
 
-    plt.show()
+    plt.show(block = True)
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     main()
