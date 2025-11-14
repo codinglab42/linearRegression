@@ -1,5 +1,10 @@
-import sys
 import os
+import sys
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
 
 def setup_project():
     """Setup del path del progetto - da importare in tutti gli script"""
@@ -14,3 +19,21 @@ def setup_project():
 
 # Esegui automaticamente
 project_root = setup_project()
+
+
+def main():
+
+    print(f"🚀 Inizio del main cost function of house price prediction")
+
+
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+

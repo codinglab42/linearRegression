@@ -20,12 +20,13 @@ def setup_project():
 # Esegui automaticamente
 project_root = setup_project()
 
-from utils.models.LinearRegresssion import LinearRegressionOneVariable
+
+from utils.models.computeLinearRegresssion import LinearRegressionOneVariable
 
 
 def main():
 
-    print(f"🚀 Inizio del main")
+    print(f"🚀 Inizio del main house price prediction")
 #from ... import ml_util.models.LinearRegresssion import LinearRegressionOneVariable
 
 
