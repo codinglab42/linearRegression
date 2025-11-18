@@ -20,7 +20,6 @@ def setup_project():
 # Esegui automaticamente
 project_root = setup_project()
 
-
 from utils.models.computeLinearRegresssion import LinearRegressionOneVariable
 
 
@@ -50,6 +49,10 @@ def main():
     tmp_f_wb = LinearRegressionOneVariable(x, w, b)
 
     print("sto per iniziare il plot")
+
+
+    #plt_house_x(x, y, tmp_f_wb, plt)
+
 
     # Plot
     plt.title("Housing Price")
