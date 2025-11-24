@@ -14,7 +14,7 @@
             "cppStandard": "c++17",
             "intelliSenseMode": "linux-gcc-x64",
             "configurationProvider": "ms-vscode.cmake-tools",
-            "compileCommands": "${workspaceFolder}/../../build/cpp-core/compile_commands.json"
+            "compileCommands": "${workspaceFolder}/../../build/ml_algorithms/compile_commands.json"
         }
     ],
     "version": 4

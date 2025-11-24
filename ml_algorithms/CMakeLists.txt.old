@@ -1,0 +1,30 @@
+cmake_minimum_required(VERSION 3.15)
+project(MLAlgorithms VERSION 1.0.0 LANGUAGES CXX)
+
+# Imposta standard C++
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Export dei comandi
+SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# Eigen
+find_package(Eigen3 REQUIRED)
+
+# Crea libreria statica
+add_library(ml_algorithms STATIC
+    src/algorithms.cpp
+    # Aggiungi altri file sorgente qui
+)
+
+# Directory include
+target_include_directories(ml_algorithms 
+    PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+target_link_libraries(ml_algorithms PUBLIC Eigen3::Eigen)
+
+
+
+
+

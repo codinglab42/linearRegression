@@ -1,0 +1,85 @@
+cmake_minimum_required(VERSION 3.15)
+project(MLAlgorithms VERSION 1.0.0 LANGUAGES CXX)
+
+# Imposta standard C++
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Export compile commands
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# === PYBIND11 INSTALLATO VIA PIP / PYENV ===
+# Dì a CMake quale Python usare
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+
+# Recupera il path ai file CMake di pybind11 (installato via pip)
+execute_process(
+    COMMAND ${Python3_EXECUTABLE} -m pybind11 --cmakedir
+    OUTPUT_VARIABLE PYBIND11_CMAKE_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+list(APPEND CMAKE_PREFIX_PATH "${PYBIND11_CMAKE_DIR}")
+
+
+# Trova Eigen
+find_package(Eigen3 REQUIRED)
+
+# Trova pybind11
+find_package(pybind11 REQUIRED)
+
+# -----------------------------
+# 1) Libreria STATICA
+# -----------------------------
+add_library(ml_algorithms_static STATIC
+    src/algorithms.cpp
+)
+
+target_include_directories(ml_algorithms_static
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(ml_algorithms_static
+    PUBLIC
+        Eigen3::Eigen
+)
+
+# Evita che la static abbia il prefisso "lib" quando incorporata nel modulo Python
+set_target_properties(ml_algorithms_static PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+# -----------------------------
+# 2) Libreria DINAMICA
+# -----------------------------
+add_library(ml_algorithms_shared SHARED
+    src/algorithms.cpp
+)
+
+target_include_directories(ml_algorithms_shared
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(ml_algorithms_shared
+    PUBLIC
+        Eigen3::Eigen
+)
+
+# -----------------------------
+# 3) Modulo Python via pybind11
+# -----------------------------
+pybind11_add_module(pymlalgorithms
+    python/bindings.cpp
+)
+
+# Include comuni
+target_include_directories(pymlalgorithms
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+# 🔥 Il modulo Python linka la libreria STATICA
+target_link_libraries(pymlalgorithms
+    PRIVATE
+        ml_algorithms_static
+)
