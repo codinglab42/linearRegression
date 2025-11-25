@@ -83,12 +83,13 @@ set_target_properties(ml_algorithms_shared PROPERTIES
 )
 
 # === OPCIONE 3: MODULO PYTHON CON PYTHON11 ===
-set(PYTHON_MODULE_SOURCES
-    python_bindings.cpp  # File wrapper per Python
-)
+#set(PYTHON_MODULE_SOURCES
+#    python_bindings/src_cpp/bindAlgorithms.cpp  # File wrapper per Python
+#)
 
 pybind11_add_module(ml_algorithms_py
-    ${PYTHON_MODULE_SOURCES}
+#    ${PYTHON_MODULE_SOURCES}
+    ../python-bindings/src_cpp/bindAlgorithms.cpp  # File wrapper per Python
 )
 
 # Il modulo Python linka contro la libreria statica

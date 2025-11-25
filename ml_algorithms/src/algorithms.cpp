@@ -1,4 +1,4 @@
-#include "include/algorithms.h"
+#include "algorithms.h"
 #include <cmath>
 
 namespace ml {
