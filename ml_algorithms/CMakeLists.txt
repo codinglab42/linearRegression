@@ -8,17 +8,13 @@ find_package(Eigen3 REQUIRED)
 # === LISTA DEI FILE SORGENTE CONDIVISI ===
 set(ML_SOURCES
     src/algorithms.cpp
-    #src/linear_algebra.cpp
-    #src/cost_functions.cpp
-    #src/gradient_descent.cpp
+    src/linear_regression_one_var.cpp
     # Aggiungi altri file sorgente qui
 )
 
 set(ML_HEADERS
     include/algorithms.h
-    #include/linear_algebra.h
-    #include/cost_functions.h
-    #include/gradient_descent.h
+    include/linear_regression_one_var.h
     # Aggiungi altri header qui
 )
 

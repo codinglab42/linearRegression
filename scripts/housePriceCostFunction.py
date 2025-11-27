@@ -26,41 +26,41 @@ from utils.helpers.lab_utils_common import compute_cost
 
 
 
-def old_main():
-
-    print(f"🚀 Inizio del main cost function of house price prediction")
-
-
-    DATASET = os.path.join(project_root, "dataset", "housePrice.csv")
-    COLS=["size", "price"]
-
-    # Read housing dataset
-    housingData = pd.read_csv(DATASET, usecols=COLS)
-
-    # print(housingData.head(5))
-
-    # Axis
-    x = housingData["size"]
-    y = housingData["price"]
-
-
-    rng = np.array([200-200,200+200])
-    tmp_b = 100
-
-    ar = np.arange(*rng, 5)
-    cost = np.zeros_like(ar)
-
-    for i in range(len(ar)):
-        tmp_w = ar[i]
-        cost [i]= compute_cost(x, y, tmp_w, tmp_b)
-
-    @interact(w=(rng[0], rng[1], 10), continuous_update=False)
-    def func(w=150):
-
-        f_wb = np.dot(x, y) + tmp_b
-
-        fig, ax = plt.subplot(1, 2, constrayned_layout = True, figsize = (8,4))
-        fig.canvas.toolbar_position = 'bottom'
+#def old_main():
+#
+#    print(f"🚀 Inizio del main cost function of house price prediction")
+#
+#
+#    DATASET = os.path.join(project_root, "dataset", "housePrice.csv")
+#    COLS=["size", "price"]
+#
+#    # Read housing dataset
+#    housingData = pd.read_csv(DATASET, usecols=COLS)
+#
+#    # print(housingData.head(5))
+#
+#    # Axis
+#    x = housingData["size"]
+#    y = housingData["price"]
+#
+#
+#    rng = np.array([200-200,200+200])
+#    tmp_b = 100
+#
+#    ar = np.arange(*rng, 5)
+#    cost = np.zeros_like(ar)
+#
+#    for i in range(len(ar)):
+#        tmp_w = ar[i]
+#        cost [i]= compute_cost(x, y, tmp_w, tmp_b)
+#
+#    @interact(w=(rng[0], rng[1], 10), continuous_update=False)
+#    def func(w=150):
+#
+#        f_wb = np.dot(x, y) + tmp_b
+#
+#        fig, ax = plt.subplot(1, 2, constrayned_layout = True, figsize = (8,4))
+#        fig.canvas.toolbar_position = 'bottom'
 
 
 
