@@ -20,12 +20,12 @@ find_package(pybind11 REQUIRED)
 
 # Crea modulo Python
 pybind11_add_module(pymlalgorithms
-    src/bindAlgorithms
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/bindAlgorithms.cpp
 )
 
 target_include_directories(pymlalgorithms 
     PRIVATE 
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../ml_algorithms/include>
+    ${CMAKE_CURRENT_SOURCE_DIR}/../ml_algorithms/include>
 )
 
 
