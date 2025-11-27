@@ -3,8 +3,9 @@
 # ----------------------------------------
 
 # Ignora la cartella di compilazione principale e tutto il suo contenuto.
-# Questa è l'unica riga necessaria per ignorare: ml_algorithms/build/
+/build
 /ml_algorithms/build/
+/pyBindAlgorithms/build
 
 # Ignora i file di output compilati, nel caso in cui finiscano altrove
 *.o             # File oggetto
