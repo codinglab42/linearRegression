@@ -30,11 +30,8 @@ target_include_directories(ml_algorithms_static
 
 target_link_libraries(ml_algorithms_static PUBLIC Eigen3::Eigen)
 
-# Rinomina l'output per chiarezza
-set_target_properties(ml_algorithms_static PROPERTIES
-    POSITION_INDEPENDENT_CODE ON
-    OUTPUT_NAME ml_algorithms
-    CLEAN_DIRECT_OUTPUT 1
+set_target_properties(ml_algorithms_static PROPERTIES 
+    OUTPUT_NAME "ml_algorithms_static"
 )
 
 # === LIBRERIA DINAMICA (SHARED) ===
@@ -51,7 +48,12 @@ target_link_libraries(ml_algorithms_shared PUBLIC Eigen3::Eigen)
 
 # Rinomina l'output shared library
 set_target_properties(ml_algorithms_shared PROPERTIES
-    OUTPUT_NAME ml_algorithms_shared
+    OUTPUT_NAME "ml_algorithms_shared"
+)
+
+# === PER TUTTE LE LIBRERIE ===
+set_target_properties(ml_algorithms_static ml_algorithms_shared PROPERTIES
+    POSITION_INDEPENDENT_CODE ON
     SOVERSION ${PROJECT_VERSION_MAJOR}
     VERSION ${PROJECT_VERSION}
     CLEAN_DIRECT_OUTPUT 1

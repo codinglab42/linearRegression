@@ -4,7 +4,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(ml_algorithms, m) {
+PYBIND11_MODULE(pymlalgorithms, m) {
     m.doc() = "Machine Learning algorithms implemented in C++ with pybind11";
     
     // Linear Regression One Variable

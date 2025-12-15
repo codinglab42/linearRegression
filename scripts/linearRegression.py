@@ -1,4 +1,4 @@
-import ml_algorithms
+import pymlalgorithms as ml
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -7,7 +7,7 @@ X = [1.0, 2.0, 3.0, 4.0, 5.0]  # Feature (una variabile)
 y = [1.0, 2.0, 3.0, 4.0, 5.0]  # Target
 
 # Crea e addestra il modello
-model = ml_algorithms.LinearRegressionOneVar(learning_rate=0.01, iterations=1000)
+model = ml.LinearRegressionOneVar(learning_rate=0.01, iterations=1000)
 model.fit(X, y)
 
 # Previsioni

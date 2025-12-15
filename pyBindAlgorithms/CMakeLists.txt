@@ -23,16 +23,23 @@ pybind11_add_module(pymlalgorithms
     ${CMAKE_CURRENT_SOURCE_DIR}/src/bindAlgorithms.cpp
 )
 
-target_include_directories(pymlalgorithms 
-    PRIVATE 
-    ${CMAKE_CURRENT_SOURCE_DIR}/../ml_algorithms/include>
+# Imposta il nome di output della libreria
+set_target_properties(pymlalgorithms PROPERTIES
+    OUTPUT_NAME "pymlalgorithms"
+    PREFIX ""
+    SUFFIX ".so"
 )
 
-
+target_include_directories(pymlalgorithms 
+    PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../ml_algorithms/include
+)
 
 # Link alla libreria core e pybind11
 target_link_libraries(pymlalgorithms 
     PRIVATE 
     ml_algorithms_static
 )
+
+
 

@@ -4,15 +4,18 @@
 
 # Ignora la cartella di compilazione principale e tutto il suo contenuto.
 /build
+/lib
 /ml_algorithms/build/
 /pyBindAlgorithms/build
 
 # Ignora i file di output compilati, nel caso in cui finiscano altrove
-*.o             # File oggetto
-*.a             # Librerie statiche (come libml_algorithms.a)
-*.so            # Librerie dinamiche (come ml_algorithms_py.so)
-*.dll
-*.lib
+lib/*.o             # File oggetto
+lib/*.a             # Librerie statiche (come libml_algorithms.a)
+lib/*.so            # Librerie dinamiche (come ml_algorithms_py.so)
+lib/*.dll
+lib/*.lib
+lib/pymlalgorithms*
+lib/*.cpython
 
 
 # ----------------------------------------
@@ -49,3 +52,4 @@ dist/
 # ----------------------------------------
 *.log
 *.tmp
+lib/libml_algorithms_shared.so
