@@ -5,8 +5,21 @@ import sys
 import os
 import numpy as np
 
+
+"""Setup del path del progetto - da importare in tutti gli script"""
+current_script_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_script_dir)  # Torna alla root
+    
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+    
+print(f"🚀 Project root added to path: {project_root}")
+
+import setup_project
+
 # Importa la funzione di setup dal test_import
-from test_import import setup_paths, test_import
+#from test_import import setup_paths, test_import
+from utils.helpers.import_lib import lib_pymlalgorithms_import
 
 def test_linear_regression():
     """Test della regressione lineare con dati sintetici"""
@@ -15,10 +28,10 @@ def test_linear_regression():
     print("="*60)
     
     # Configura path prima di tutto
-    project_root, lib_dir = setup_paths()
+    # project_root, lib_dir = setup_lib_paths()
     
     # Importa la libreria
-    ml = test_import()
+    ml = lib_pymlalgorithms_import()
     if ml is None:
         return False
     
@@ -77,12 +90,12 @@ def test_linear_regression():
 
 if __name__ == "__main__":
     # Prima configura i path
-    project_root, lib_dir = setup_paths()
-    print(f"Project root: {project_root}")
-    print(f"Lib directory: {lib_dir}")
+    #project_root , lib_dir = setup_lib_paths()
+    #print(f"Project root: {project_root}")
+    #print(f"Lib directory: {lib_dir}")
     
     # Testa l'import
-    ml = test_import()
+    ml = lib_pymlalgorithms_import()
     if ml is None:
         print("❌ Test fallito: impossibile importare la libreria")
         sys.exit(1)

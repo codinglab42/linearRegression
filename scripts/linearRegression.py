@@ -1,6 +1,27 @@
-import pymlalgorithms as ml
+import sys
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+"""Setup del path del progetto - da importare in tutti gli script"""
+current_script_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_script_dir)  # Torna alla root
+    
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+    
+print(f"🚀 Project root added to path: {project_root}")
+
+import setup_project
+
+from utils.helpers.import_lib import lib_pymlalgorithms_import
+
+# Importa la libreria
+ml = lib_pymlalgorithms_import()
+if ml is None:
+    print("❌ impossibile importare la libreria")
+    sys.exit(1)
 
 # Esempio identico al corso di Andrew Ng
 X = [1.0, 2.0, 3.0, 4.0, 5.0]  # Feature (una variabile)
