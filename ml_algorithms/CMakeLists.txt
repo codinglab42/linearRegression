@@ -9,12 +9,14 @@ find_package(Eigen3 REQUIRED)
 set(ML_SOURCES
     src/algorithms.cpp
     src/linear_regression_one_var.cpp
+    src/linear_regression_multi_var.cpp
     # Aggiungi altri file sorgente qui
 )
 
 set(ML_HEADERS
     include/algorithms.h
     include/linear_regression_one_var.h
+    include/src/linear_regression_multi_var.h
     # Aggiungi altri header qui
 )
 

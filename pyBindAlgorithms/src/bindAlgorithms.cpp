@@ -1,12 +1,36 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 #include "linear_regression_one_var.h"
+#include "linear_regression_multi_var.h"  // NUOVA INCLUSIONE
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(pymlalgorithms, m) {
-    m.doc() = "Machine Learning algorithms implemented in C++ with pybind11";
+// Helper per convertire liste/numpy
+std::vector<std::vector<double>> convert_to_2d_vector(py::object obj) {
+    std::vector<std::vector<double>> result;
     
+    if (py::isinstance<py::list>(obj)) {
+        py::list py_list = obj.cast<py::list>();
+        for (auto& item : py_list) {
+            if (py::isinstance<py::list>(item)) {
+                py::list inner_list = item.cast<py::list>();
+                std::vector<double> vec;
+                for (auto& val : inner_list) {
+                    vec.push_back(val.cast<double>());
+                }
+                result.push_back(vec);
+            }
+        }
+    }
+    
+    return result;
+}
+
+PYBIND11_MODULE(pymlalgorithms, m) {
+    m.doc() = "Machine Learning algorithms from Andrew Ng course";
+    
+    // ========== REGRESSIONE LINEARE UNA VARIABILE ==========
     // Linear Regression One Variable
     py::class_<LinearRegressionOneVar>(m, "LinearRegressionOneVar")
         .def(py::init<>())
@@ -34,4 +58,67 @@ PYBIND11_MODULE(pymlalgorithms, m) {
         .def_property_readonly("cost_history", &LinearRegressionOneVar::get_cost_history)
         .def_property_readonly("theta0_history", &LinearRegressionOneVar::get_theta0_history)
         .def_property_readonly("theta1_history", &LinearRegressionOneVar::get_theta1_history);
+    // ========== REGRESSIONE LINEARE MULTI-VARIABILE ==========
+    py::class_<LinearRegressionMultiVar>(m, "LinearRegressionMultiVar")
+        .def(py::init<>())
+        .def(py::init<double, int>(), 
+             py::arg("learning_rate") = 0.01, 
+             py::arg("iterations") = 1000)
+        
+        // Training
+        .def("fit", [](LinearRegressionMultiVar& model,
+                       const std::vector<std::vector<double>>& X,
+                       const std::vector<double>& y) {
+            model.fit(X, y);
+        }, py::arg("X"), py::arg("y"), 
+           "Train multi-variable linear regression")
+        
+        // Predizioni
+        .def("predict", &LinearRegressionMultiVar::predict, 
+             "Predict single sample")
+        
+        .def("predict_batch", &LinearRegressionMultiVar::predict_batch, 
+             "Predict multiple samples")
+        
+        // Getter
+        .def("get_theta", &LinearRegressionMultiVar::get_theta, 
+             "Get all theta parameters")
+        
+        .def("get_theta0", &LinearRegressionMultiVar::get_theta0, 
+             "Get intercept (theta0)")
+        
+        .def("get_theta_i", &LinearRegressionMultiVar::get_theta_i, 
+             py::arg("index"), "Get theta at specific index")
+        
+        .def("get_cost_history", &LinearRegressionMultiVar::get_cost_history)
+        .def("get_theta_history", &LinearRegressionMultiVar::get_theta_history)
+        .def("get_num_features", &LinearRegressionMultiVar::get_num_features)
+        .def("get_learning_rate", &LinearRegressionMultiVar::get_learning_rate)
+        .def("get_iterations", &LinearRegressionMultiVar::get_iterations)
+        
+        // Metriche
+        .def("r2_score", &LinearRegressionMultiVar::r2_score,
+             py::arg("X"), py::arg("y"), "Calculate R² score")
+        
+        .def("mse", &LinearRegressionMultiVar::mse,
+             py::arg("X"), py::arg("y"), "Calculate Mean Squared Error")
+        
+        // Salva/Carica
+        .def("save_model", &LinearRegressionMultiVar::save_model)
+        .def("load_model", &LinearRegressionMultiVar::load_model)
+        
+        // Utility
+        .def("print_model", &LinearRegressionMultiVar::print_model)
+        .def("get_formula", &LinearRegressionMultiVar::get_formula)
+        
+        // Properties (accesso stile Python)
+        .def_property_readonly("theta", &LinearRegressionMultiVar::get_theta)
+        .def_property_readonly("theta0", &LinearRegressionMultiVar::get_theta0)
+        .def_property_readonly("cost_history", &LinearRegressionMultiVar::get_cost_history)
+        .def_property_readonly("num_features", &LinearRegressionMultiVar::get_num_features)
+        
+        .def("__repr__", [](const LinearRegressionMultiVar &model) {
+            return "LinearRegressionMultiVar(n_features=" + 
+                   std::to_string(model.get_num_features()) + ")";
+        });
 }
