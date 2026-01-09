@@ -10,6 +10,7 @@ set(ML_SOURCES
     src/algorithms.cpp
     src/linear_regression_one_var.cpp
     src/linear_regression_multi_var.cpp
+    src/logistic_regression.cpp
     # Aggiungi altri file sorgente qui
 )
 

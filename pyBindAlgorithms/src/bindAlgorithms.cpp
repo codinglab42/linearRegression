@@ -2,7 +2,8 @@
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
 #include "linear_regression_one_var.h"
-#include "linear_regression_multi_var.h"  // NUOVA INCLUSIONE
+#include "linear_regression_multi_var.h"
+#include "logistic_regression.h"
 
 namespace py = pybind11;
 
@@ -58,6 +59,8 @@ PYBIND11_MODULE(pymlalgorithms, m) {
         .def_property_readonly("cost_history", &LinearRegressionOneVar::get_cost_history)
         .def_property_readonly("theta0_history", &LinearRegressionOneVar::get_theta0_history)
         .def_property_readonly("theta1_history", &LinearRegressionOneVar::get_theta1_history);
+
+
     // ========== REGRESSIONE LINEARE MULTI-VARIABILE ==========
     py::class_<LinearRegressionMultiVar>(m, "LinearRegressionMultiVar")
         .def(py::init<>())
@@ -121,4 +124,89 @@ PYBIND11_MODULE(pymlalgorithms, m) {
             return "LinearRegressionMultiVar(n_features=" + 
                    std::to_string(model.get_num_features()) + ")";
         });
+
+
+     // ========== LOGISTIC REGRESSION ==========
+    py::class_<LogisticRegression>(m, "LogisticRegression")
+        .def(py::init<>())
+        .def(py::init<double, int, double>(), 
+             py::arg("learning_rate") = 0.01, 
+             py::arg("iterations") = 1000,
+             py::arg("lambda") = 0.0,
+             "Initialize Logistic Regression with optional regularization")
+        
+        // Training
+        .def("fit", [](LogisticRegression& model,
+                       const std::vector<std::vector<double>>& X,
+                       const std::vector<double>& y) {
+            model.fit(X, y);
+        }, py::arg("X"), py::arg("y"), 
+           "Train logistic regression model (binary classification)")
+        
+        // Predizioni
+        .def("predict_probability", &LogisticRegression::predict_probability, 
+             py::arg("x"), "Predict probability of class 1")
+        
+        .def("predict_class", &LogisticRegression::predict_class, 
+             py::arg("x"), py::arg("threshold") = 0.5,
+             "Predict class (0 or 1) with given threshold")
+        
+        .def("predict_probabilities", &LogisticRegression::predict_probabilities, 
+             py::arg("X"), "Predict probabilities for multiple samples")
+        
+        .def("predict_classes", &LogisticRegression::predict_classes, 
+             py::arg("X"), py::arg("threshold") = 0.5,
+             "Predict classes for multiple samples")
+        
+        // Getter
+        .def("get_theta", &LogisticRegression::get_theta, 
+             "Get all theta parameters")
+        
+        .def("get_theta0", &LogisticRegression::get_theta0, 
+             "Get intercept (theta0)")
+        
+        .def("get_theta_i", &LogisticRegression::get_theta_i, 
+             py::arg("index"), "Get theta at specific index")
+        
+        .def("get_cost_history", &LogisticRegression::get_cost_history)
+        .def("get_theta_history", &LogisticRegression::get_theta_history)
+        .def("get_num_features", &LogisticRegression::get_num_features)
+        .def("get_learning_rate", &LogisticRegression::get_learning_rate)
+        .def("get_iterations", &LogisticRegression::get_iterations)
+        .def("get_lambda", &LogisticRegression::get_lambda)
+        
+        // Metriche
+        .def("accuracy", &LogisticRegression::accuracy,
+             py::arg("X"), py::arg("y"), py::arg("threshold") = 0.5,
+             "Calculate accuracy score")
+        
+        .def("precision_recall_f1", &LogisticRegression::precision_recall_f1,
+             py::arg("X"), py::arg("y"), py::arg("threshold") = 0.5,
+             "Calculate precision, recall and F1-score")
+        
+        // Decision boundary (per 2D)
+        .def("get_decision_boundary_2d", &LogisticRegression::get_decision_boundary_2d,
+             py::arg("threshold") = 0.5,
+             "Get decision boundary line parameters for 2D data [intercept, slope]")
+        
+        // Salva/Carica
+        .def("save_model", &LogisticRegression::save_model)
+        .def("load_model", &LogisticRegression::load_model)
+        
+        // Utility
+        .def("print_model", &LogisticRegression::print_model)
+        .def("get_formula", &LogisticRegression::get_formula)
+        
+        // Properties (accesso stile Python)
+        .def_property_readonly("theta", &LogisticRegression::get_theta)
+        .def_property_readonly("theta0", &LogisticRegression::get_theta0)
+        .def_property_readonly("cost_history", &LogisticRegression::get_cost_history)
+        .def_property_readonly("num_features", &LogisticRegression::get_num_features)
+        
+        .def("__repr__", [](const LogisticRegression &model) {
+            return "LogisticRegression(n_features=" + 
+                   std::to_string(model.get_num_features()) + 
+                   ", lambda=" + std::to_string(model.get_lambda()) + ")";
+        });
+
 }
